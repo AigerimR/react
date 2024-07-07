@@ -33,13 +33,15 @@ class SearchBar extends React.Component<unknown, MyState> {
     }
     return (
       <>
-        <div className="inputContainer">
-          <input
-            type="text"
-            className="input"
-            onChange={(e) => this.setState({ inputValue: e.target.value })}
-          />
-          <button onClick={this.saveToLS}>search</button>
+        <div className="grid">
+          <div className="inputContainer">
+            <input
+              type="text"
+              className="input"
+              onChange={(e) => this.setState({ inputValue: e.target.value })}
+            />
+            <button onClick={this.saveToLS}>search</button>
+          </div>
 
           <button onClick={this.initError}>Click twice to make an error</button>
         </div>

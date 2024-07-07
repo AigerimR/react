@@ -3,7 +3,6 @@
   padding: 0;
   border: 0;
 }
-
 .top {
   width: 100vw;
   height: 20vh;
@@ -16,4 +15,16 @@
   width: 100vw;
   height: 80vh;
   background-color: paleturquoise;
+}
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 250px;
+  gap: 20px;
 }
