@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./сard.module.scss";
 
 interface Artwork {
+  id: number;
   title: string;
   image_id: string;
   artist_display: string;

@@ -1,5 +1,5 @@
 import "./App.css";
-import CardDetail from "./components/CardDetails/CardDetails";
+import CardDetails from "./components/CardDetails/CardDetails";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Main from "./views/MainPage";
 import NotFound from "./views/NotFound";
@@ -12,7 +12,7 @@ function App() {
         <ErrorBoundary>
           <Routes>
             <Route path="/" element={<Main />}>
-              <Route path="/card/:id" element={<CardDetail />} />
+              <Route path="/card/:id" element={<CardDetails />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

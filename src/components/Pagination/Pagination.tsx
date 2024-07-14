@@ -19,13 +19,13 @@ const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
   return (
     <div className={classes.pagination}>
       <button
-        className={classes.btn}
+        className={classes.prev}
         onClick={() => goToPage(page - 1)}
         disabled={page <= 1}
       ></button>
       <p>{page}</p>
       <button
-        className={classes.btn}
+        className={classes.next}
         onClick={() => goToPage(page + 1)}
       ></button>
     </div>

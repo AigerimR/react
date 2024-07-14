@@ -15,6 +15,10 @@
   width: 100vw;
   height: 80vh;
 }
+.bottom.split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
 .inputContainer {
   display: flex;
   align-items: center;

@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import classes from "./cardlist.module.scss";
 import Card from "../Card/Card";
 
 interface Artwork {
+  id: number;
   title: string;
   image_id: string;
   artist_display: string;
@@ -14,10 +14,11 @@ interface CardListProps {
   data: Artwork[];
   loading: boolean;
   error: Error | null;
+  onCardClick: (cardId: number) => void;
 }
 
 const CardList: React.FC<CardListProps> = (props) => {
-  const { data, loading, error } = props;
+  const { data, loading, error, onCardClick } = props;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -31,10 +32,10 @@ const CardList: React.FC<CardListProps> = (props) => {
     return <div>Sorry nothing matched your search</div>;
   }
 
-  const renderedCards = data.map((el, i) => (
-    <Link key={i} to={`/card/${i}`}>
-      <Card key={i} content={el} />
-    </Link>
+  const renderedCards = data.map((el) => (
+    <div key={el.id} onClick={() => onCardClick(el.id)}>
+      <Card key={el.id} content={el} />
+    </div>
   ));
 
   return (
