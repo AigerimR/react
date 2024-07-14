@@ -7,7 +7,9 @@ const CardDetails: React.FC = () => {
   const navigate = useNavigate();
 
   const closeCardDetails = () => {
-    navigate(`/`);
+    const searchParams = new URLSearchParams(location.search);
+    const page = searchParams.get("page") || "1";
+    navigate(`/?page=${page}`);
   };
 
   const { id } = useParams<{ id: string }>();

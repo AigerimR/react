@@ -6,7 +6,10 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = (props) => {
-  const [inputValue, setInputValue] = useLocalStorage<string>("inputValue", "");
+  const [newValue, setINewValue] = useLocalStorage<string>("inputValue", "");
+
+  const [inputValue, setInputValue] = useState(newValue || "");
+
   const [counter, setCounter] = useState<number>(0);
 
   useEffect(() => {
@@ -17,7 +20,7 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
 
   const search = () => {
     props.onSearch(inputValue);
-    setInputValue(inputValue);
+    setINewValue(inputValue);
   };
 
   const initError = () => {

@@ -19,9 +19,9 @@ const Main: React.FC = () => {
 
   useEffect(() => {
     if (cardDetailsState) {
-      navigate(`/card/${selectedCardId}?page=${page}`);
+      navigate(`/card/${selectedCardId}?page=${page}`, { replace: true });
     } else {
-      navigate(`/?page=${page}`);
+      navigate(`/?page=${page}`, { replace: true });
     }
   }, [cardDetailsState, selectedCardId, navigate, page]);
 
@@ -46,7 +46,6 @@ const Main: React.FC = () => {
       setSelectedCardId(null);
     } else {
       setCardDetailsState(true);
-      setSelectedCardId(cardId);
       setSelectedCardId(cardId);
     }
   };

@@ -1,18 +1,19 @@
 import React from "react";
 import classes from "./pagination.module.scss";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 interface PaginationProps {
   onPageChange: (newPage: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const page = parseInt(searchParams.get("page") ?? "1");
 
   const goToPage = (newPage: number) => {
     searchParams.set("page", newPage.toString());
-    setSearchParams(searchParams);
+    navigate(`/?${searchParams.toString()}`);
     onPageChange(newPage);
   };
 

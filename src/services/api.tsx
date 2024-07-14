@@ -19,7 +19,7 @@ const useFetch = (searchTerm: string, page: number) => {
         const response = await fetch(
           searchTerm === ""
             ? `https://api.artic.edu/api/v1/artworks?page=${page}&fields=id,title,artist_display,description,image_id`
-            : `https://api.artic.edu/api/v1/artworks/search?q=${searchTerm}&query[term][is_public_domain]=true&fields=id,title,artist_display,description,image_id`,
+            : `https://api.artic.edu/api/v1/artworks/search?q=${searchTerm}&query[term][is_public_domain]=true&page=${page}&fields=id,title,artist_display,description,image_id`,
         );
         if (!response.ok) {
           throw new Error("Response was not ok");
