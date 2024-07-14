@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar/SearchBar";
 import CardList from "../components/CardList/CardList";
 import useFetch from "../services/api";
@@ -16,6 +16,36 @@ const Main: React.FC = () => {
   const { data, loading, error } = useFetch(searchTerm, page);
   const navigate = useNavigate();
   const location = useLocation();
+  // const callFetch = (inputValue: string) => {
+  //   setSearchTerm(inputValue);
+  // };
+
+  const callFetch = useCallback(
+    (inputValue: string) => {
+      setSearchTerm(inputValue);
+    },
+    [setSearchTerm],
+  );
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const query = searchParams.get("search") || "";
+    const pageParam = searchParams.get("page") || "1";
+    const cardId = searchParams.get("cardId");
+
+    if (searchTerm !== query) setSearchTerm(query);
+    if (page !== Number(pageParam)) setPage(Number(pageParam));
+    if (cardId && selectedCardId !== Number(cardId))
+      setSelectedCardId(Number(cardId));
+
+    callFetch(searchTerm);
+  }, [
+    location.search,
+    searchTerm,
+    page,
+    selectedCardId,
+    setSearchTerm,
+    callFetch,
+  ]);
 
   useEffect(() => {
     if (cardDetailsState) {
@@ -31,10 +61,6 @@ const Main: React.FC = () => {
       setSelectedCardId(null);
     }
   }, [location]);
-
-  const callFetch = (inputValue: string) => {
-    setSearchTerm(inputValue);
-  };
 
   const changePage = (page: number) => {
     setPage(page);

@@ -15,11 +15,13 @@ const useFetch = (searchTerm: string, page: number) => {
   useEffect(() => {
     const fetchArtworks = async () => {
       setLoading(true);
+      const encodedSearchTerm = encodeURIComponent(searchTerm);
+
       try {
         const response = await fetch(
           searchTerm === ""
             ? `https://api.artic.edu/api/v1/artworks?page=${page}&fields=id,title,artist_display,description,image_id`
-            : `https://api.artic.edu/api/v1/artworks/search?q=${searchTerm}&query[term][is_public_domain]=true&page=${page}&fields=id,title,artist_display,description,image_id`,
+            : `https://api.artic.edu/api/v1/artworks/search?q=${encodedSearchTerm}&query[term][is_public_domain]=true&page=${page}&fields=id,title,artist_display,description,image_id`,
         );
         if (!response.ok) {
           throw new Error("Response was not ok");
