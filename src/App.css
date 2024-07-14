@@ -14,7 +14,6 @@
 .bottom {
   width: 100vw;
   height: 80vh;
-  background-color: paleturquoise;
 }
 .inputContainer {
   display: flex;

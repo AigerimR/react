@@ -1,0 +1,13 @@
+.pagination {
+  margin: 20px auto;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  .btn {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 2px solid #cccccc;
+    margin: 0 20px;
+  }
+}

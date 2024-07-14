@@ -1,16 +1,23 @@
 import "./App.css";
+import CardDetail from "./components/CardDetails/CardDetails";
 import ErrorBoundary from "./components/ErrorBoundary";
-import SearchBar from "./components/searchBar";
+import Main from "./views/MainPage";
+import NotFound from "./views/NotFound";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <>
-      <ErrorBoundary>
-        <div className="top">
-          <SearchBar />
-        </div>
-        <div className="bottom"></div>
-      </ErrorBoundary>
+      <BrowserRouter>
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<Main />}>
+              <Route path="/card/:id" element={<CardDetail />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ErrorBoundary>
+      </BrowserRouter>
     </>
   );
 }
