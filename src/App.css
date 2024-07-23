@@ -13,7 +13,7 @@
 }
 .bottom {
   width: 100vw;
-  height: 80vh;
+  min-height: 80vh;
 }
 .bottom.split {
   display: grid;
@@ -30,4 +30,27 @@
   grid-template-columns: 1fr;
   width: 250px;
   gap: 20px;
+}
+.light,
+.dark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.switcher {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+}
+
+.dark {
+  background-color: #3f3f3f;
+
+  .top {
+    background-color: #110a0a;
+  }
+  .lightText {
+    color: white;
+  }
 }

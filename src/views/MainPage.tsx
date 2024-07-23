@@ -1,12 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar/SearchBar";
 import CardList from "../components/CardList/CardList";
 import useFetch from "../services/api";
 import Pagination from "../components/Pagination/Pagination";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import ThemeContext from "../context/ThemeContext";
 
 const Main: React.FC = () => {
+  const { theme, setTheme } = useContext(ThemeContext);
+
   const [searchTerm, setSearchTerm] = useLocalStorage<string>("inputValue", "");
 
   const [page, setPage] = useState(1);
@@ -16,9 +19,6 @@ const Main: React.FC = () => {
   const { data, loading, error } = useFetch(searchTerm, page);
   const navigate = useNavigate();
   const location = useLocation();
-  // const callFetch = (inputValue: string) => {
-  //   setSearchTerm(inputValue);
-  // };
 
   const callFetch = useCallback(
     (inputValue: string) => {
@@ -76,22 +76,32 @@ const Main: React.FC = () => {
     }
   };
 
+  const changeTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+  console.log("Current theme:", theme); // Debugging
+
   return (
     <>
-      <div className="top">
-        <SearchBar onSearch={callFetch} />
-      </div>
-      <div className={cardDetailsState ? "bottom split" : "bottom"}>
-        <div>
-          <Pagination onPageChange={changePage} />
-          <CardList
-            data={data}
-            loading={loading}
-            error={error}
-            onCardClick={handleCardClick}
-          />
+      <div className={theme}>
+        <button className="switcher" onClick={changeTheme}>
+          Switch Theme
+        </button>
+        <div className="top">
+          <SearchBar onSearch={callFetch} />
         </div>
-        <Outlet />
+        <div className={cardDetailsState ? "bottom split" : "bottom"}>
+          <div>
+            <Pagination onPageChange={changePage} />
+            <CardList
+              data={data}
+              loading={loading}
+              error={error}
+              onCardClick={handleCardClick}
+            />
+          </div>
+          <Outlet />
+        </div>
       </div>
     </>
   );

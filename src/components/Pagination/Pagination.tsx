@@ -18,7 +18,7 @@ const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
   };
 
   return (
-    <div className={classes.pagination}>
+    <div className={`${classes.pagination} lightText`}>
       <button
         className={classes.prev}
         onClick={() => goToPage(page - 1)}

@@ -28,7 +28,7 @@ const CardDetails: React.FC = () => {
   }
 
   return (
-    <div className={classes.details}>
+    <div className={`${classes.details} lightText`}>
       <button onClick={closeCardDetails} className={classes.btn}></button>
       <p className={classes.title}>{data.title}</p>
       <p className={classes.subtitle}>{data.artist_display}</p>
