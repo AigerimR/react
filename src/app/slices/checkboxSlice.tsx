@@ -17,10 +17,13 @@ export const checkboxSlice = createSlice({
         state.splice(i, 1);
       }
     },
+    clearCheckboxLsit: (state) => {
+      state.length = 0;
+    },
   },
 });
 
-export const { addToCheckboxList, removeFromCheckboxList } =
+export const { addToCheckboxList, removeFromCheckboxList, clearCheckboxLsit } =
   checkboxSlice.actions;
 
 export default checkboxSlice.reducer;

@@ -6,6 +6,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ThemeContext from "../context/ThemeContext";
 import { api } from "../services/api";
+import Flyout from "../components/Flyout/Flyout";
 
 const Main: React.FC = () => {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -106,6 +107,7 @@ const Main: React.FC = () => {
           </div>
           <Outlet />
         </div>
+        <Flyout />
       </div>
     </>
   );

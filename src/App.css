@@ -14,6 +14,7 @@
 .bottom {
   width: 100vw;
   min-height: 80vh;
+  padding-bottom: 125px;
 }
 .bottom.split {
   display: grid;
@@ -52,5 +53,8 @@
   }
   .lightText {
     color: white;
+  }
+  .flyout {
+    background: black;
   }
 }
