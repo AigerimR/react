@@ -1,5 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./сard.module.scss";
+import type { RootState } from "../../app/store";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  addToCheckboxList,
+  removeFromCheckboxList,
+} from "../../app/slices/checkboxSlice";
 
 interface Artwork {
   id: number;
@@ -15,7 +22,27 @@ interface CardProp {
 }
 
 const Card: React.FC<CardProp> = (props) => {
-  const { title, image_id, artist_display } = props.content;
+  const checkboxes = useSelector((state: RootState) => state.checkboxes);
+  const dispatch = useDispatch();
+
+  const { id, title, image_id, artist_display } = props.content;
+
+  useEffect(() => {
+    setIsChecked(checkboxes.includes(id));
+  }, [checkboxes, id]);
+
+  function toggleStateInStore(cardId: number): void {
+    if (checkboxes.includes(cardId)) {
+      dispatch(removeFromCheckboxList(cardId));
+    } else {
+      dispatch(addToCheckboxList(cardId));
+    }
+    // console.log(checkboxes);
+
+    // console.log(cardId);
+  }
+
+  const [isChecked, setIsChecked] = useState(checkboxes.includes(id));
 
   return (
     <>
@@ -29,6 +56,11 @@ const Card: React.FC<CardProp> = (props) => {
           <p className={classes.card_title}>{title}</p>
           <p>{artist_display}</p>
         </div>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => toggleStateInStore(id)}
+        ></input>
       </div>
     </>
   );

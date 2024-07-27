@@ -1,13 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface Artwork {
+export interface Artwork {
   id: number;
   title: string;
   image_id: string;
   artist_display: string;
   description: string | null;
 }
-interface QueryArguments {
+export interface QueryArguments {
   searchTerm: string;
   page: number;
 }
@@ -19,8 +19,6 @@ export const api = createApi({
     getListByPage: builder.query<Artwork[], QueryArguments>({
       query({ searchTerm, page }) {
         const encodedSearchTerm = encodeURIComponent(searchTerm);
-        console.log(page);
-
         return {
           url:
             searchTerm === ""

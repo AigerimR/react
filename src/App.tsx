@@ -6,15 +6,15 @@ import ThemeContext from "./context/ThemeContext";
 import Main from "./views/MainPage";
 import NotFound from "./views/NotFound";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { api } from "./services/api";
-import { ApiProvider } from "@reduxjs/toolkit/query/react";
+import { Provider } from "react-redux";
+import { store } from "./app/store";
 
 function App() {
   const [theme, setTheme] = useState("light");
 
   return (
     <>
-      <ApiProvider api={api}>
+      <Provider store={store}>
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <BrowserRouter>
             <ErrorBoundary>
@@ -27,7 +27,7 @@ function App() {
             </ErrorBoundary>
           </BrowserRouter>
         </ThemeContext.Provider>
-      </ApiProvider>
+      </Provider>
     </>
   );
 }

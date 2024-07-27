@@ -16,11 +16,10 @@ const Main: React.FC = () => {
   const [cardDetailsState, setCardDetailsState] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
-  const { data, isLoading, isError } = api.useGetListByPageQuery({
+  const { data, isLoading, isError, isFetching } = api.useGetListByPageQuery({
     searchTerm,
-    page: page.toString(),
+    page,
   });
-  // console.log(data);
 
   const dataFetched = data ?? [];
   const navigate = useNavigate();
@@ -100,7 +99,7 @@ const Main: React.FC = () => {
             <Pagination onPageChange={changePage} />
             <CardList
               data={dataFetched}
-              loading={isLoading}
+              loading={isLoading || isFetching}
               error={isError}
               onCardClick={handleCardClick}
             />
