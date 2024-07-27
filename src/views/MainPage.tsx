@@ -1,11 +1,11 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar/SearchBar";
 import CardList from "../components/CardList/CardList";
-import useFetch from "../services/api";
 import Pagination from "../components/Pagination/Pagination";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ThemeContext from "../context/ThemeContext";
+import { api } from "../services/api";
 
 const Main: React.FC = () => {
   const { theme, setTheme } = useContext(ThemeContext);
@@ -16,7 +16,13 @@ const Main: React.FC = () => {
   const [cardDetailsState, setCardDetailsState] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
-  const { data, loading, error } = useFetch(searchTerm, page);
+  const { data, isLoading, isError } = api.useGetListByPageQuery({
+    searchTerm,
+    page: page.toString(),
+  });
+  // console.log(data);
+
+  const dataFetched = data ?? [];
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -79,7 +85,6 @@ const Main: React.FC = () => {
   const changeTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
-  console.log("Current theme:", theme); // Debugging
 
   return (
     <>
@@ -94,9 +99,9 @@ const Main: React.FC = () => {
           <div>
             <Pagination onPageChange={changePage} />
             <CardList
-              data={data}
-              loading={loading}
-              error={error}
+              data={dataFetched}
+              loading={isLoading}
+              error={isError}
               onCardClick={handleCardClick}
             />
           </div>

@@ -13,7 +13,7 @@ interface Artwork {
 interface CardListProps {
   data: Artwork[];
   loading: boolean;
-  error: Error | null;
+  error: boolean;
   onCardClick: (cardId: number) => void;
 }
 
@@ -25,7 +25,7 @@ const CardList: React.FC<CardListProps> = (props) => {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: something got wrong</div>;
   }
 
   if (data.length === 0) {
