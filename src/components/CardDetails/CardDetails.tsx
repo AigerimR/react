@@ -41,6 +41,7 @@ const CardDetails: React.FC = () => {
       </div>
       <div
         className={classes.description}
+        aria-label="detail-description"
         dangerouslySetInnerHTML={{
           __html: data.description || "<p>No description available</p>",
         }}
