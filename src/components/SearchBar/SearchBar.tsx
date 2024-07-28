@@ -43,7 +43,9 @@ const SearchBar: React.FC<SearchBarProps> = (props) => {
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <button onClick={search}>search</button>
+        <button onClick={search} aria-label="serach btn">
+          search
+        </button>
       </div>
 
       <button onClick={initError}>Click twice to make an error</button>

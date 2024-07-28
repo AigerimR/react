@@ -1,10 +1,8 @@
 import React from "react";
-import classes from "./flyout.module.scss";
-
 import type { RootState } from "../../app/store";
 import { useSelector, useDispatch } from "react-redux";
-
 import { clearCheckboxLsit } from "../../app/slices/checkboxSlice";
+import classes from "./flyout.module.scss";
 
 const Flyout: React.FC = () => {
   const checkboxes = useSelector((state: RootState) => state.checkboxes);
@@ -12,8 +10,6 @@ const Flyout: React.FC = () => {
   const dispatch = useDispatch();
 
   function deleteAllCheckedItems(): void {
-    console.log("delete");
-
     dispatch(clearCheckboxLsit());
   }
 
@@ -23,7 +19,6 @@ const Flyout: React.FC = () => {
         <div className={classes.flyout}>
           <p>{checkboxes.length} items are selected</p>
           <button onClick={deleteAllCheckedItems}>Unselect all</button>
-          <button>Download</button>
         </div>
       )}
     </>

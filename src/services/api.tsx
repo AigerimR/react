@@ -22,8 +22,8 @@ export const api = createApi({
         return {
           url:
             searchTerm === ""
-              ? `https://api.artic.edu/api/v1/artworks?page=${page}&fields=id,title,artist_display,description,image_id`
-              : `https://api.artic.edu/api/v1/artworks/search?q=${encodedSearchTerm}&query[term][is_public_domain]=true&page=${page}&fields=id,title,artist_display,description,image_id`,
+              ? `/artworks?page=${page}&fields=id,title,artist_display,description,image_id`
+              : `/artworks/search?q=${encodedSearchTerm}&query[term][is_public_domain]=true&page=${page}&fields=id,title,artist_display,description,image_id`,
           responseHandler: async (response: Response) => {
             if (response) {
               const result = await response.json();
@@ -34,6 +34,23 @@ export const api = createApi({
                 artist_display: item.artist_display,
                 description: item.description,
               }));
+              return content;
+            } else {
+              console.error("Response does not contain data:", response);
+              return [];
+            }
+          },
+        };
+      },
+    }),
+    getSingleItem: builder.query<Artwork, string>({
+      query(cardId) {
+        return {
+          url: `/artworks/${cardId}?fields=id,title,artist_display,description,image_id`,
+          responseHandler: async (response: Response) => {
+            if (response) {
+              const result = await response.json();
+              const content: Artwork = result.data;
               return content;
             } else {
               console.error("Response does not contain data:", response);

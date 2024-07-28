@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import useSingleFetch from "../../services/useSingleFetch";
 import classes from "./carddetails.module.scss";
-import api from "../../services/api";
 
 const CardDetails: React.FC = () => {
   const navigate = useNavigate();
@@ -13,16 +13,14 @@ const CardDetails: React.FC = () => {
   };
 
   const { id } = useParams<{ id: string }>();
+  const { data, loading, error } = useSingleFetch(id ?? "");
 
-  const { data, isLoading, isError, isFetching } = api.useGetSingleItemQuery(
-    id ?? "",
-  );
-  if (isLoading || isFetching) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (isError) {
-    return <div>Error while fetching</div>;
+  if (error) {
+    return <div>Error: {error.message}</div>;
   }
 
   if (!data) {

@@ -23,6 +23,15 @@
   }
 }
 .text_wr {
+  position: relative;
   background: white;
   padding: 8px;
+  padding-bottom: 44px;
+}
+.checkbox {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  right: 12px;
+  bottom: 12px
 }

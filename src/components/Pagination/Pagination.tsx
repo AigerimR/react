@@ -28,6 +28,7 @@ const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
       <button
         className={classes.next}
         onClick={() => goToPage(page + 1)}
+        aria-label="Next Page Btn"
       ></button>
     </div>
   );

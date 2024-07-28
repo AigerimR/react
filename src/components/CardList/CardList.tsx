@@ -33,7 +33,7 @@ const CardList: React.FC<CardListProps> = (props) => {
   }
 
   const renderedCards = data.map((el) => (
-    <div key={el.id} onClick={() => onCardClick(el.id)}>
+    <div key={el.id} onClick={() => onCardClick(el.id)} data-testid="card-wr">
       <Card key={el.id} content={el} />
     </div>
   ));

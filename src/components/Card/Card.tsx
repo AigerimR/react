@@ -37,9 +37,6 @@ const Card: React.FC<CardProp> = (props) => {
     } else {
       dispatch(addToCheckboxList(cardId));
     }
-    // console.log(checkboxes);
-
-    // console.log(cardId);
   }
 
   const [isChecked, setIsChecked] = useState(checkboxes.includes(id));
@@ -55,12 +52,13 @@ const Card: React.FC<CardProp> = (props) => {
         <div className={classes.text_wr}>
           <p className={classes.card_title}>{title}</p>
           <p>{artist_display}</p>
+          <input
+            className={classes.checkbox}
+            type="checkbox"
+            checked={isChecked}
+            onChange={() => toggleStateInStore(id)}
+          ></input>
         </div>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={() => toggleStateInStore(id)}
-        ></input>
       </div>
     </>
   );
