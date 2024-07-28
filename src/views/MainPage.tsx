@@ -88,7 +88,7 @@ const Main: React.FC = () => {
 
   return (
     <>
-      <div className={theme}>
+      <div className={theme} role="theme">
         <button className="switcher" onClick={changeTheme}>
           Switch Theme
         </button>
