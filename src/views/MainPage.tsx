@@ -3,19 +3,23 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import CardList from "../components/CardList/CardList";
 import Pagination from "../components/Pagination/Pagination";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import ThemeContext from "../context/ThemeContext";
 import { api } from "../services/api";
 import Flyout from "../components/Flyout/Flyout";
+import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+const CardDetails = dynamic(
+  () => import("../components/CardDetails/CardDetails"),
+  { ssr: false },
+);
 
 const Main: React.FC = () => {
+  const router = useRouter();
+  const { query } = router;
+  const { id } = router.query;
   const { theme, setTheme } = useContext(ThemeContext);
-
   const [searchTerm, setSearchTerm] = useLocalStorage<string>("inputValue", "");
-
   const [page, setPage] = useState(1);
-  const [cardDetailsState, setCardDetailsState] = useState(false);
-  const [selectedCardId, setSelectedCardId] = useState<number | null>(null);
 
   const { data, isLoading, isError, isFetching } = api.useGetListByPageQuery({
     searchTerm,
@@ -23,8 +27,6 @@ const Main: React.FC = () => {
   });
 
   const dataFetched = data ?? [];
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const callFetch = useCallback(
     (inputValue: string) => {
@@ -33,52 +35,36 @@ const Main: React.FC = () => {
     [setSearchTerm],
   );
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get("search") || "";
-    const pageParam = searchParams.get("page") || "1";
-    const cardId = searchParams.get("cardId");
+    const querySearch = query.search || "";
+    const queryPage = query.page || "1";
 
-    if (searchTerm !== query) setSearchTerm(query);
-    if (page !== Number(pageParam)) setPage(Number(pageParam));
-    if (cardId && selectedCardId !== Number(cardId))
-      setSelectedCardId(Number(cardId));
+    if (searchTerm !== querySearch) setSearchTerm(querySearch as string);
+    if (page !== Number(queryPage)) setPage(Number(queryPage));
 
-    callFetch(searchTerm);
-  }, [
-    location.search,
-    searchTerm,
-    page,
-    selectedCardId,
-    setSearchTerm,
-    callFetch,
-  ]);
-
-  useEffect(() => {
-    if (cardDetailsState) {
-      navigate(`/card/${selectedCardId}?page=${page}`, { replace: true });
-    } else {
-      navigate(`/?page=${page}`, { replace: true });
-    }
-  }, [cardDetailsState, selectedCardId, navigate, page]);
-
-  useEffect(() => {
-    if (location.pathname === "/") {
-      setCardDetailsState(false);
-      setSelectedCardId(null);
-    }
-  }, [location]);
+    callFetch(searchTerm as string);
+  }, [query, searchTerm, page, setSearchTerm, callFetch]);
 
   const changePage = (page: number) => {
     setPage(page);
   };
 
   const handleCardClick = (cardId: number) => {
-    if (selectedCardId === cardId) {
-      setCardDetailsState(false);
-      setSelectedCardId(null);
+    const currentId = query.id as string | undefined;
+    const queryString = new URLSearchParams(
+      query as Record<string, string>,
+    ).toString();
+    if (cardId.toString() === currentId) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { id, ...remainingQueryParams } = query;
+
+      const queryString = new URLSearchParams(
+        remainingQueryParams as Record<string, string>,
+      ).toString();
+      const newUrl = `/?${queryString}`;
+      router.push(newUrl);
     } else {
-      setCardDetailsState(true);
-      setSelectedCardId(cardId);
+      const newUrl = `/card/${cardId}${queryString ? `?${queryString}` : ""}`;
+      router.push(newUrl);
     }
   };
 
@@ -95,7 +81,7 @@ const Main: React.FC = () => {
         <div className="top">
           <SearchBar onSearch={callFetch} />
         </div>
-        <div className={cardDetailsState ? "bottom split" : "bottom"}>
+        <div className={id ? "bottom split" : "bottom"}>
           <div>
             <Pagination onPageChange={changePage} />
             <CardList
@@ -105,7 +91,7 @@ const Main: React.FC = () => {
               onCardClick={handleCardClick}
             />
           </div>
-          <Outlet />
+          {id && <CardDetails />}
         </div>
         <Flyout />
       </div>

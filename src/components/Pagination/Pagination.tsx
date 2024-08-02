@@ -1,19 +1,21 @@
 import React from "react";
 import classes from "./pagination.module.scss";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 
 interface PaginationProps {
   onPageChange: (newPage: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const page = parseInt(searchParams.get("page") ?? "1");
+  const router = useRouter();
+  const { page } = router.query;
+  const currentPage = parseInt(page as string) || 1;
 
   const goToPage = (newPage: number) => {
-    searchParams.set("page", newPage.toString());
-    navigate(`/?${searchParams.toString()}`);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, page: newPage },
+    });
     onPageChange(newPage);
   };
 
@@ -21,13 +23,13 @@ const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
     <div className={`${classes.pagination} lightText`}>
       <button
         className={classes.prev}
-        onClick={() => goToPage(page - 1)}
-        disabled={page <= 1}
+        onClick={() => goToPage(currentPage - 1)}
+        disabled={currentPage <= 1}
       ></button>
-      <p>{page}</p>
+      <p>{currentPage}</p>
       <button
         className={classes.next}
-        onClick={() => goToPage(page + 1)}
+        onClick={() => goToPage(currentPage + 1)}
         aria-label="Next Page Btn"
       ></button>
     </div>

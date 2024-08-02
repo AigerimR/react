@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import checkboxSliceReducer from "../../app/slices/checkboxSlice";
+import checkboxSliceReducer from "../../store/slices/checkboxSlice";
 import api from "../../services/api";
 import Card from "./Card";
 

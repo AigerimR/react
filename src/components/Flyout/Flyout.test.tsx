@@ -5,7 +5,7 @@ import { api } from "../../services/api";
 import Flyout from "./Flyout";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import checkboxSliceReducer from "../../app/slices/checkboxSlice";
+import checkboxSliceReducer from "../../store/slices/checkboxSlice";
 
 const mockStore = configureStore({
   reducer: {

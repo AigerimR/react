@@ -1,7 +1,7 @@
 import React from "react";
-import type { RootState } from "../../app/store";
+import type { RootState } from "../../store/store";
 import { useSelector, useDispatch } from "react-redux";
-import { clearCheckboxLsit } from "../../app/slices/checkboxSlice";
+import { clearCheckboxLsit } from "../../store/slices/checkboxSlice";
 import classes from "./flyout.module.scss";
 
 interface Artwork {

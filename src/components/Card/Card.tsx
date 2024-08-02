@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import classes from "./сard.module.scss";
-import type { RootState } from "../../app/store";
+import type { RootState } from "../../store/store";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
   addToCheckboxList,
   removeFromCheckboxList,
-} from "../../app/slices/checkboxSlice";
+} from "../../store/slices/checkboxSlice";
 
 interface Artwork {
   id: number;

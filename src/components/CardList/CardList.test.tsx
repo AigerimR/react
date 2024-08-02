@@ -4,7 +4,7 @@ import "@testing-library/jest-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import CardList from "./CardList";
-import checkboxSliceReducer from "../../app/slices/checkboxSlice";
+import checkboxSliceReducer from "../../store/slices/checkboxSlice";
 import api from "../../services/api";
 
 const mockStore = configureStore({
