@@ -6,8 +6,13 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import ThemeContext from "../context/ThemeContext";
 import { api } from "../services/api";
 import Flyout from "../components/Flyout/Flyout";
-import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 const CardDetails = dynamic(
   () => import("../components/CardDetails/CardDetails"),
   { ssr: false },
@@ -15,8 +20,10 @@ const CardDetails = dynamic(
 
 const Main: React.FC = () => {
   const router = useRouter();
-  const { query } = router;
-  const { id } = router.query;
+  const pathname = usePathname();
+  const params = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
+
   const { theme, setTheme } = useContext(ThemeContext);
   const [searchTerm, setSearchTerm] = useLocalStorage<string>("inputValue", "");
   const [page, setPage] = useState(1);
@@ -35,35 +42,24 @@ const Main: React.FC = () => {
     [setSearchTerm],
   );
   useEffect(() => {
-    const querySearch = query.search || "";
-    const queryPage = query.page || "1";
+    const querySearch = searchParams.get("search") || "";
+    const queryPage = searchParams.get("page") || "1";
 
     if (searchTerm !== querySearch) setSearchTerm(querySearch as string);
     if (page !== Number(queryPage)) setPage(Number(queryPage));
 
     callFetch(searchTerm as string);
-  }, [query, searchTerm, page, setSearchTerm, callFetch]);
-
+  }, [searchParams, searchTerm, page, setSearchTerm, callFetch]);
   const changePage = (page: number) => {
     setPage(page);
   };
 
   const handleCardClick = (cardId: number) => {
-    const currentId = query.id as string | undefined;
-    const queryString = new URLSearchParams(
-      query as Record<string, string>,
-    ).toString();
+    const currentId = params.id as string | undefined;
     if (cardId.toString() === currentId) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { id, ...remainingQueryParams } = query;
-
-      const queryString = new URLSearchParams(
-        remainingQueryParams as Record<string, string>,
-      ).toString();
-      const newUrl = `/?${queryString}`;
-      router.push(newUrl);
+      router.push(pathname);
     } else {
-      const newUrl = `/card/${cardId}${queryString ? `?${queryString}` : ""}`;
+      const newUrl = `/card/${cardId}${searchParams.get("search") ? `?${searchParams.get("search")}` : ""}`;
       router.push(newUrl);
     }
   };
@@ -81,7 +77,7 @@ const Main: React.FC = () => {
         <div className="top">
           <SearchBar onSearch={callFetch} />
         </div>
-        <div className={id ? "bottom split" : "bottom"}>
+        <div className={params.id ? "bottom split" : "bottom"}>
           <div>
             <Pagination onPageChange={changePage} />
             <CardList
@@ -91,7 +87,7 @@ const Main: React.FC = () => {
               onCardClick={handleCardClick}
             />
           </div>
-          {id && <CardDetails />}
+          {params.id && <CardDetails />}
         </div>
         <Flyout />
       </div>

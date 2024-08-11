@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./pagination.module.scss";
-import { useRouter } from "next/router";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface PaginationProps {
   onPageChange: (newPage: number) => void;
@@ -8,14 +8,18 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({ onPageChange }) => {
   const router = useRouter();
-  const { page } = router.query;
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const page = searchParams.get("page") || "1";
+
   const currentPage = parseInt(page as string) || 1;
 
   const goToPage = (newPage: number) => {
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, page: newPage },
-    });
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.set("page", newPage.toString());
+
+    router.push(`${pathname}?${currentParams.toString()}`);
     onPageChange(newPage);
   };
 
