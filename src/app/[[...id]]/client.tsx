@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Provider } from "react-redux";
-import { store } from "../../store/store";
 import ThemeContext from "../../context/ThemeContext";
 
 import dynamic from "next/dynamic";
 import ErrorBoundary from "../../components/ErrorBoundary";
+import { store } from "../../store/store";
 const Main = dynamic(() => import("../../views/MainPage"), { ssr: false });
 
 export function ClientOnly() {

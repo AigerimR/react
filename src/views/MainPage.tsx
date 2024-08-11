@@ -42,10 +42,8 @@ const Main: React.FC = () => {
     [setSearchTerm],
   );
   useEffect(() => {
-    const querySearch = searchParams.get("search") || "";
     const queryPage = searchParams.get("page") || "1";
 
-    if (searchTerm !== querySearch) setSearchTerm(querySearch as string);
     if (page !== Number(queryPage)) setPage(Number(queryPage));
 
     callFetch(searchTerm as string);
@@ -56,10 +54,13 @@ const Main: React.FC = () => {
 
   const handleCardClick = (cardId: number) => {
     const currentId = params.id as string | undefined;
-    if (cardId.toString() === currentId) {
-      router.push(pathname);
+
+    if (currentId && cardId.toString() === currentId[0]) {
+      const newPathname = pathname.replace(/\/[^/]+$/, "");
+      const newUrl = `${window.location.origin}${newPathname}${window.location.search}`;
+      router.replace(newUrl);
     } else {
-      const newUrl = `/card/${cardId}${searchParams.get("search") ? `?${searchParams.get("search")}` : ""}`;
+      const newUrl = `/${cardId}${searchParams.get("page") ? `?page=${searchParams.get("page")}` : "?page=1"}`;
       router.push(newUrl);
     }
   };
@@ -67,6 +68,10 @@ const Main: React.FC = () => {
   const changeTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
+
+  if (params.id && !/^\d+$/.test(params.id)) {
+    throw new Error("Not Found");
+  }
 
   return (
     <>
