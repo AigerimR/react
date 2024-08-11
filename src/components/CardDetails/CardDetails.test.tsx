@@ -3,10 +3,19 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CardDetails from "./CardDetails";
 import { api } from "../../services/api";
-import { BrowserRouter } from "react-router-dom";
 
 describe("CardDetails", () => {
   it("Check that a loading indicator is displayed while fetching data", () => {
+    vi.mock("next/navigation", () => ({
+      useRouter: () => ({
+        replace: vi.fn(),
+      }),
+      useParams: () => ({
+        id: "456456",
+      }),
+      usePathname: () => "/path",
+    }));
+
     vi.mock("../../services/api");
 
     api.useGetSingleItemQuery.mockReturnValue({
@@ -21,11 +30,7 @@ describe("CardDetails", () => {
       isError: false,
     });
 
-    render(
-      <BrowserRouter>
-        <CardDetails />
-      </BrowserRouter>,
-    );
+    render(<CardDetails />);
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
@@ -43,11 +48,7 @@ describe("CardDetails", () => {
       isError: false,
     });
 
-    render(
-      <BrowserRouter>
-        <CardDetails />
-      </BrowserRouter>,
-    );
+    render(<CardDetails />);
     expect(screen.getByText(/Artwork Title/i)).toBeInTheDocument();
     expect(screen.getByText(/Artist Name/i)).toBeInTheDocument();
     expect(screen.getByText(/Artwork Description/i)).toBeInTheDocument();
