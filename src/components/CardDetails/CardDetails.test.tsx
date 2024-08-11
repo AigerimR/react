@@ -3,11 +3,18 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import CardDetails from "./CardDetails";
 import { api } from "../../services/api";
-import { BrowserRouter } from "react-router-dom";
+import { useRouter } from "next/router";
 
 describe("CardDetails", () => {
   it("Check that a loading indicator is displayed while fetching data", () => {
+    vi.mock("next/router", () => ({
+      useRouter: vi.fn(),
+    }));
     vi.mock("../../services/api");
+
+    (useRouter as vi.Mock).mockReturnValue({
+      query: { id: "123" },
+    });
 
     api.useGetSingleItemQuery.mockReturnValue({
       data: {
@@ -21,15 +28,15 @@ describe("CardDetails", () => {
       isError: false,
     });
 
-    render(
-      <BrowserRouter>
-        <CardDetails />
-      </BrowserRouter>,
-    );
+    render(<CardDetails />);
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
   it("card component correctly displays the detailed card data", () => {
+    (useRouter as vi.Mock).mockReturnValue({
+      query: { id: "123" },
+    });
+
     vi.mock("../../services/api");
     api.useGetSingleItemQuery.mockReturnValue({
       data: {
@@ -43,11 +50,7 @@ describe("CardDetails", () => {
       isError: false,
     });
 
-    render(
-      <BrowserRouter>
-        <CardDetails />
-      </BrowserRouter>,
-    );
+    render(<CardDetails />);
     expect(screen.getByText(/Artwork Title/i)).toBeInTheDocument();
     expect(screen.getByText(/Artist Name/i)).toBeInTheDocument();
     expect(screen.getByText(/Artwork Description/i)).toBeInTheDocument();
