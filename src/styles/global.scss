@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.top {
+  width: 100%;
+  height: 20vh;
+  background-color: blanchedalmond;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bottom {
+  width: 100%;
+  min-height: 80vh;
+  padding-bottom: 125px;
+}
+.bottom.split {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.inputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 250px;
+  gap: 20px;
+}
+.light,
+.dark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.switcher {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+}
+
+.dark {
+  background-color: #3f3f3f;
+
+  .top {
+    background-color: #110a0a;
+  }
+  .lightText {
+    color: white;
+  }
+  .flyout {
+    background: black;
+  }
+}
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}

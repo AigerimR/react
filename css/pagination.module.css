@@ -1,0 +1,18 @@
+.pagination {
+  margin: 20px auto;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+}
+.pagination .next,
+.pagination .prev {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 2px solid #cccccc;
+  margin: 0 20px;
+  background: url("../../assets/arrow.svg") center/contain no-repeat;
+}
+.pagination .next {
+  transform: rotate(180deg);
+}/*# sourceMappingURL=pagination.module.css.map */

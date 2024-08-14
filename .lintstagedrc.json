@@ -1,0 +1,9 @@
+{
+  "src/**/*.{js,ts,tsx,html,json,md}": [
+    "npm run format:fix",
+    "npm run lint"
+  ],
+  "src/**/*.{css}": [
+    "npm run format:fix"
+  ]
+}
