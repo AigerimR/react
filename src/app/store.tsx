@@ -1,14 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import checkboxSliceReducer from "./slices/checkboxSlice";
-import api from "../services/api";
+import form1SliceReducer from "./slices/form1Slice";
 
 export const store = configureStore({
   reducer: {
-    [api.reducerPath]: api.reducer,
-    checkboxes: checkboxSliceReducer,
+    form1Values: form1SliceReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
