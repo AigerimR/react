@@ -121,3 +121,12 @@ label {
   font-weight: bold;
   white-space: nowrap;
 }
+.passwordStrengthBarWr {
+  width: 100%;
+  height: 3px;
+  border-radius: 3px;
+}
+.passwordStrengthBar {
+  height: 3px;
+  border-radius: 3px;
+}

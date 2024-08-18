@@ -38,6 +38,10 @@ const Form1: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [passwordBarStyle, setPasswordBarStyle] = useState({
+    width: "100%",
+    backgroundColor: "transparent",
+  });
   const [errors, setErrors] = useState<ErrorsType>({
     name: "",
     age: "",
@@ -47,7 +51,6 @@ const Form1: React.FC = () => {
     gender: "",
     agreement: "",
     file: "",
-    // country
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,11 +78,7 @@ const Form1: React.FC = () => {
         : "",
       file: (e.currentTarget.elements.namedItem("file") as HTMLInputElement)
         .files?.[0],
-      // country: e.currentTarget.elementstarget[7].value,
     };
-
-    const formIsValid = await formSchema.isValid(formData);
-    console.log(formData);
 
     try {
       dispatch(clearForm1Values());
@@ -98,16 +97,46 @@ const Form1: React.FC = () => {
         err.inner.forEach((error) => {
           errorsObject[error.path as keyof ErrorsType] = error.message;
         });
-        console.log("inner", errorsObject);
 
         setErrors(errorsObject);
       } else {
         console.error("Unexpected error", err);
       }
     }
-
-    console.log(formIsValid);
   };
+
+  const checkPasswordStrength = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const password = e.target.value;
+    let strength = 0;
+
+    if (password.length >= 8) strength += 1;
+    if (password.match(/[0-9]/)) strength += 1;
+    if (password.match(/[a-z]/)) strength += 1;
+    if (password.match(/[A-Z]/)) strength += 1;
+    if (password.match(/[@$!%*?&]/)) strength += 1;
+
+    setPasswordBarStyle({
+      width: `${(strength / 5) * 100}%`,
+      backgroundColor: gerStrengthBarColor(strength),
+    });
+  };
+
+  function gerStrengthBarColor(strength: number) {
+    switch (strength) {
+      case 1:
+        return "red";
+      case 2:
+        return "orange";
+      case 3:
+        return "yellow";
+      case 4:
+        return "lightblue";
+      case 5:
+        return "green";
+      default:
+        return "transparent";
+    }
+  }
 
   return (
     <>
@@ -177,12 +206,19 @@ const Form1: React.FC = () => {
           <label htmlFor="password1">Password*</label>
           <div className="flexcolumn">
             <input
-              type="text"
+              type="password"
               name="password1"
               id="password1"
               placeholder="Enter password"
               required
+              onChange={checkPasswordStrength}
             />
+            <div className="passwordStrengthBarWr">
+              <div
+                className="passwordStrengthBar"
+                style={passwordBarStyle}
+              ></div>
+            </div>
             <p
               className={
                 errors.password1 ? "error-message" : "error-message invisible"
@@ -197,7 +233,7 @@ const Form1: React.FC = () => {
           <label htmlFor="password2">Confirm Password*</label>
           <div className="flexcolumn">
             <input
-              type="text"
+              type="password"
               name="password2"
               id="password2"
               placeholder="Confirm password"
@@ -268,19 +304,6 @@ const Form1: React.FC = () => {
             </p>
           </div>
         </div>
-
-        {/* <div className="flexrow">
-            <label>Select your country</label>
-            <select
-              name="select"
-              id="select"
-            >
-              <option value="kz">Kazakhstan</option>
-              <option value="uz">Uzbekistan</option>
-              <option value="ua">Ukraine</option>
-            </select>
-          </div> */}
-
         <button type="submit">Submit</button>
       </form>
     </>

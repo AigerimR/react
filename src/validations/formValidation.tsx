@@ -41,5 +41,4 @@ export const formSchema = object({
         value && value instanceof File && SUPPORTED_FORMATS.includes(value.type)
       );
     }),
-  // country: string().required()
 });
